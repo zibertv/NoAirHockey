@@ -7,38 +7,41 @@
         <script src="js/javascript.js" type="text/javascript"></script>
     </head>
     <body>
-        <h1>NO-AIR HOCKEY</h1>
+        <div id="content">
         <nav>
+            <h1>NO-AIR HOCKEY</h1>
             <a href="">PLAY</a> |
             <a href="">HIGH SCORES</a> |
             <a href="">ABOUT US</a>
         </nav>
-        <fieldset>
-            <legend>PLAYER DETAILS</legend>
+        <div id="playerDetails">
             <form>
                 <table>
                     <tr>
+                        <td>GETTING STARTED...</td>
+                    </tr>
+                    <tr>
                         <td>NAME</td>
-                        <td><input type="text" name="player"></td>
+                        <td><input type="text" name="playerName"></td>
                     </tr>
                     <tr>
                         <td>CHOOSE A SIDE</td>
                         <td>
                             <select>
-                                <option label="HOME" value="home"></option>
-                                <option label="AWAY" value="away"></option>
+                                <option value="home">HOME</option>
+                                <option value="away">AWAY</option>
                             </select>
                         </td>
                     </tr>
                     <tr>
-                        <td>CHOOSE HOME COLOR </td>
+                        <td>CHOOSE HOME COLOR</td>
                         <td>
                             <input type="color" name="homeColor"
                                    value="#FFA500">
                         </td>
                     </tr>
                     <tr>
-                        <td>CHOOSE AWAY COLOR </td>
+                        <td>CHOOSE AWAY COLOR</td>
                         <td>
                             <input type="color" name="awayColor"
                                    value="#008000">
@@ -50,15 +53,15 @@
                     </tr>
                 </table>
             </form>
-        </fieldset>
+        </div>
         <div id="info">
             <span id="home">HOME 0</span>
             <span id="period">PERIOD 1</span>
             <span id="time">1:00</span>
             <span id="away">AWAY 0</span>
         </div>
-        <br>
-        <canvas id="table"></canvas>
+        </div>
+        <canvas id="rink"></canvas>
         <?php
         // put your code here
         ?>

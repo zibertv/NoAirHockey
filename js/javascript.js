@@ -1,5 +1,5 @@
 window.onload = function() {
-    var c = document.getElementById("table");
+    var c = document.getElementById("rink");
     var ctx = c.getContext("2d");
     var form = document.forms[0];
     
@@ -29,6 +29,8 @@ window.onload = function() {
     var home;
             
     form.onsubmit = function() {
+        document.getElementById("playerDetails").style.display = "none";
+        document.getElementById("info").style.display = "inline-block";
         if (form[1].value === "home") {
             home = true;
             playerStrikerPosX = 0.2 * c.width;
@@ -151,6 +153,8 @@ window.onload = function() {
             1.5 * Math.PI, 0.5 * Math.PI);
         ctx.fillStyle = homeColor;
         ctx.fill();
+        ctx.strokeStyle = "black";
+        ctx.stroke();
         ctx.closePath();
 
         ctx.beginPath();
@@ -158,6 +162,8 @@ window.onload = function() {
             0.5 * Math.PI, 1.5 * Math.PI);
         ctx.fillStyle = awayColor;
         ctx.fill();
+        ctx.strokeStyle = "black";
+        ctx.stroke();
         ctx.closePath();
 
         // draw the puck

@@ -1,38 +1,39 @@
 body {
-    margin: 0px auto;
     text-align: center;
     background-color: black;
     color: white;
     font-family: courier;
 }
+#content {
+    max-width: 500px;
+    margin: 0px auto;
+}
+nav {
+    border: thin solid white;
+    text-align: center;
+    padding-bottom: 10px;
+}
 a:link, a:visited {
     color: white;
-    text-decoration: none;
 }
-fieldset {
-    margin: 10px auto;
-    text-align: left;
-    width: 30%;
-}
-ol, ul {
-    text-align: center;
-    list-style-position: inside;
+table {
+    text-align: initial;
 }
 #info {
     font-size: 24px;
-    border: 10px solid blue;
-    margin-bottom: 10px;
-    display: inline-block;
-    background-color: blue;
+    border: 10px solid black;
+    margin: 10px 0px;
+    display: none;
+    background-color: black;
 }
 #home {
-    background-color: rgb(244, 150, 66);
+    background-color: orange;
     margin: 0px;
     padding: 0px 10px 0px 10px;
     display: inline;
 }
 #away {
-    background-color: rgb(260, 66, 244);
+    background-color: green;
     margin: 0px;
     padding: 0px 10px 0px 10px;
     display: inline;
