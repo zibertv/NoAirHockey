@@ -10,9 +10,9 @@
         <div id="content">
         <nav>
             <h1>NO-AIR HOCKEY</h1>
-            <a href="">PLAY</a> |
-            <a href="">HIGH SCORES</a> |
-            <a href="">ABOUT US</a>
+            <a href="index.php">PLAY</a> |
+            <a href="highscores.php">HIGH SCORES</a> |
+            <a href="aboutus.php">ABOUT US</a>
         </nav>
         <div id="playerDetails">
             <form>

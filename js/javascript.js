@@ -324,7 +324,6 @@ window.onload = function() {
         } else if (puckPosX - radius > c.width) {
             homeScore += 1;
             document.getElementById("home").innerHTML = "HOME " + homeScore;            
-            awayScore += 1;
             document.getElementById("away").innerHTML = "AWAY " + awayScore;
             return true;
         }

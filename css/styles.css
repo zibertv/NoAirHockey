@@ -5,7 +5,7 @@ body {
     font-family: courier;
 }
 #content {
-    max-width: 500px;
+    max-width: 600px;
     margin: 0px auto;
 }
 nav {
@@ -29,18 +29,39 @@ table {
 #home {
     background-color: orange;
     margin: 0px;
-    padding: 0px 10px 0px 10px;
     display: inline;
 }
 #away {
     background-color: green;
     margin: 0px;
-    padding: 0px 10px 0px 10px;
     display: inline;
 }
 #period, #time {
     background-color: black;
     margin: 0px;
-    padding: 0px 10px 0px 10px;
     display: inline;
+}
+/*styles for the aboutus page*/
+#bios {
+    float: left;
+}
+article {
+    clear: left;
+    overflow: auto;
+    text-align: initial;
+}
+figure {
+    float: left;
+    padding-bottom: 9px;
+    width: 200px;
+    border: thick solid white;
+    border-radius: 10px;
+}
+
+figcaption {
+    text-align: center;
+}
+img {
+    height: inherit;
+    width: inherit;
 }
