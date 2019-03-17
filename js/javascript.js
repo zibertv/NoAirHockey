@@ -1,7 +1,8 @@
 window.onload = function() {
     var c = document.getElementById("table");
     var ctx = c.getContext("2d");
-
+    var form = document.forms[0];
+    
     // set width and height of the rink
     c.width = 900;
     c.height = 450;
@@ -18,17 +19,34 @@ window.onload = function() {
     var puckDirX = 0;
     var puckDirY = 0;
     var puckSpeed = 10;
-
-    // player's striker position
-    var playerStrikerPosX = 0.2 * c.width;
+    
+    var playerStrikerPosX;
     var playerStrikerPosY = 0.5 * c.height;
-
-    // cpu's striker position, direction, and speed
-    var cpuStrikerPosX = 0.8 * c.width;
+    var cpuStrikerPosX;
     var cpuStrikerPosY = 0.5 * c.height;
+    var homeColor = "orange";
+    var awayColor = "green";
+    var home;
+            
+    form.onsubmit = function() {
+        if (form[1].value === "home") {
+            home = true;
+            playerStrikerPosX = 0.2 * c.width;
+            cpuStrikerPosX = 0.8 * c.width;
+        } else {
+            home = false;
+            playerStrikerPosX = 0.8 * c.width;
+            cpuStrikerPosX = 0.2 * c.width;            
+        }
+        
+        // begins the animation
+        startAnimation();
+        return false;
+    };
+
+    // cpu's direction, and speed
     var cpuStrikerDir = 0;
     var cpuStrikerSpeed = 1.5;
-
     // the following 2 variables are used to periodically determine whether the
     // left mouse button is being held
     var mouseDownTimer = null;
@@ -72,7 +90,7 @@ window.onload = function() {
         ctx.moveTo(c.width / 3, 0);
         ctx.lineTo(c.width / 3, c.height);
         ctx.closePath();
-        ctx.strokeStyle = "rgba(0, 0, 255, 0.2)"
+        ctx.strokeStyle = "rgba(0, 0, 255, 0.2)";
         ctx.stroke();
 
         ctx.beginPath();
@@ -131,14 +149,14 @@ window.onload = function() {
         ctx.beginPath();
         ctx.arc(0, c.height / 2, c.height / 6, 
             1.5 * Math.PI, 0.5 * Math.PI);
-        ctx.fillStyle = "rgb(244, 150, 66)";
+        ctx.fillStyle = homeColor;
         ctx.fill();
         ctx.closePath();
 
         ctx.beginPath();
         ctx.arc(c.width, c.height / 2, c.height / 6,
             0.5 * Math.PI, 1.5 * Math.PI);
-        ctx.fillStyle = "rgb(260, 66, 244)";
+        ctx.fillStyle = awayColor;
         ctx.fill();
         ctx.closePath();
 
@@ -154,9 +172,13 @@ window.onload = function() {
         ctx.arc(playerStrikerPosX, playerStrikerPosY, radius, 0, 2 * Math.PI);
         ctx.closePath();
         ctx.lineWidth = 5;
-        ctx.strokeStyle = "rgb(244, 120, 66)";
+        ctx.strokeStyle = "black";
         ctx.stroke();
-        ctx.fillStyle = "rgb(244, 150, 66)";
+        if (home) {
+            ctx.fillStyle = homeColor;
+        } else {
+            ctx.fillStyle = awayColor;
+        }
         ctx.fill();
 
         ctx.beginPath();
@@ -173,9 +195,12 @@ window.onload = function() {
         ctx.beginPath();
         ctx.arc(cpuStrikerPosX, cpuStrikerPosY, radius, 0, 2 * Math.PI);
         ctx.closePath();
-        ctx.strokeStyle = "rgb(200, 66, 244)";
         ctx.stroke();
-        ctx.fillStyle = "rgb(260, 66, 244)";
+        if (home) {
+            ctx.fillStyle = awayColor;
+        } else {
+            ctx.fillStyle = homeColor;
+        }
         ctx.fill();
 
         ctx.beginPath();
@@ -226,7 +251,7 @@ window.onload = function() {
     // coordinate of the puck
     function moveCPUStriker() {
         var yDelta = puckPosY - cpuStrikerPosY;
-        if (yDelta != 0) {
+        if (yDelta !== 0) {
             cpuStrikerPosY += cpuStrikerSpeed * (yDelta / Math.abs(yDelta));
         }
     }
@@ -236,7 +261,7 @@ window.onload = function() {
         // determine whether the player's striker collided with the puck
         var xDelta = puckPosX - playerStrikerPosX;
         var yDelta = puckPosY - playerStrikerPosY;
-        var distance = Math.sqrt(Math.pow(xDelta, 2) + Math.pow(yDelta, 2))
+        var distance = Math.sqrt(Math.pow(xDelta, 2) + Math.pow(yDelta, 2));
         if (distance <= 2 * radius) {
                 puckDirX = xDelta / distance;
                 puckDirY = yDelta / distance;
@@ -251,22 +276,13 @@ window.onload = function() {
             puckDirY = yDeltaCPU / distanceCPU;
         }
         // determine whether the puck has collided with the boundaries
-        if (puckPosY - radius <= goalTop) {
+        if ((puckPosY - radius <= 0) || (puckPosY + radius >= c.height)) {
+            puckDirY *= -1;
+        }
+        if ((puckPosY - radius <= goalTop) || (puckPosY + radius >= goalBottom)) {
             if ((puckPosX - radius <= 0) || (puckPosX + radius >= c.width)) {
                 puckDirX *= -1;
             }
-            if (puckPosY - radius <= 0) {
-                puckDirY *= -1;
-            }
-        } else if (puckPosY + radius >= goalBottom) {
-            if ((puckPosX - radius <= 0) || (puckPosX + radius >= c.width)) {
-                puckDirX *= -1;
-            }
-            if (puckPosY + radius >= c.height) {
-                puckDirY *= -1;
-            }
-        } else {
-            goalScored();
         }
         puckPosX += puckSpeed * puckDirX;
         puckPosY += puckSpeed * puckDirY;
@@ -282,10 +298,15 @@ window.onload = function() {
 
     // reset the striker positions in the event of a goal
     function resetStrikers() {
-        playerStrikerPosX = 0.2 * c.width;
-        playerStrikerPosY = 0.5 * c.height;
-        cpuStrikerPosX = 0.8 * c.width;
+        if (home) {
+            playerStrikerPosX = 0.2 * c.width;
+            cpuStrikerPosX = 0.8 * c.width;
+        } else {
+            playerStrikerPosX = 0.8 * c.width;
+            cpuStrikerPosX = 0.2 * c.width;            
+        }
         cpuStrikerPosY = 0.5 * c.height;
+        playerStrikerPosY = 0.5 * c.height;
     }
 
     // determine whether a goal has been scored
@@ -313,6 +334,4 @@ window.onload = function() {
         }
         moveCPUStriker();
     }
-    // begins the animation
-    startAnimation();
 };

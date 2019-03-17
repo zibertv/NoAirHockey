@@ -34,14 +34,14 @@
                         <td>CHOOSE HOME COLOR </td>
                         <td>
                             <input type="color" name="homeColor"
-                                   value="#F47842">
+                                   value="#FFA500">
                         </td>
                     </tr>
                     <tr>
                         <td>CHOOSE AWAY COLOR </td>
                         <td>
                             <input type="color" name="awayColor"
-                                   value="#C842F4">
+                                   value="#008000">
                         </td>
                     </tr>
                     <tr>
