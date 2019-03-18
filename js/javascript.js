@@ -43,8 +43,17 @@ window.onload = function() {
         
         // begins the animation
         startAnimation();
+        document.getElementById("theme").play();
         return false;
     };
+    
+    document.getElementById("theme").addEventListener('timeupdate', function() {
+        var buffer = 0.14;
+        if (this.currentTime > this.duration - buffer) {
+            this.currentTime = 0;
+            this.play();
+        }
+    })
 
     // cpu's direction, and speed
     var cpuStrikerDir = 0;
@@ -281,15 +290,32 @@ window.onload = function() {
             puckDirX = xDeltaCPU / distanceCPU;
             puckDirY = yDeltaCPU / distanceCPU;
         }
-        // determine whether the puck has collided with the boundaries
-        if ((puckPosY - radius <= 0) || (puckPosY + radius >= c.height)) {
-            puckDirY *= -1;
-        }
-        if ((puckPosY - radius <= goalTop) || (puckPosY + radius >= goalBottom)) {
-            if ((puckPosX - radius <= 0) || (puckPosX + radius >= c.width)) {
-                puckDirX *= -1;
+                // determine whether the puck has collided with the boundaries 
+        if (puckPosY <= goalTop) { 
+            if (puckPosY <= radius) { 
+                puckDirY *= -1; 
+            } 
+            if ((puckPosX <= radius) || (puckPosX + radius >= c.width)) { 
+                puckDirX *= -1; 
+            } 
+        } else if ((puckPosY > goalTop) && (puckPosY < goalBottom)) { 
+            if ((puckPosX <= radius && puckPosX >= 0) || 
+                    (puckPosX + radius >= c.width && puckPosX <= c.width)) { 
+                if ((puckPosY - radius <= goalTop) || 
+                        (puckPosY + radius >= goalBottom)) { 
+                    puckDirX *= -1; 
+                } 
+            } else if ((puckPosX <= radius) || (puckPosX >= c.width)) { 
+                puckDirY *= -1; 
+            } 
+        } else if (puckPosY >= goalBottom) { 
+            if (puckPosY + radius >= c.height) { 
+                puckDirY *= -1; 
+            } 
+            if ((puckPosX <= radius) || (puckPosX + radius >= c.width)) { 
+                puckDirX *= -1; 
             }
-        }
+        } 
         puckPosX += puckSpeed * puckDirX;
         puckPosY += puckSpeed * puckDirY;
     }
