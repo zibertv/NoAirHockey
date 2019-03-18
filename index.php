@@ -7,6 +7,10 @@
         <script src="js/javascript.js" type="text/javascript"></script>
     </head>
     <body>
+        <audio controls>
+            <source src="music/noairhockeytheme.wav" type="audio/wav">
+            Your browser does not support the audio element.
+        </audio>
         <div id="content">
         <nav>
             <h1>NO-AIR HOCKEY</h1>
