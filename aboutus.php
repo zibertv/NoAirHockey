@@ -21,15 +21,15 @@
                 </figure>
                 <p>Vincent earned a Bachelor's degree in Mathematics and 
                 Statistics from the University of Toronto sometime between 2011 
-                and 2016. In 2018, he enrolled the Software Development
+                and 2016. In 2018, he enrolled in the Software Development
                 and Network Engineering diploma program at Sheridan College. 
                 Vincent composed and recorded the short loop you hear on the 
                 site with a pair of teenage engineering pocket operators. In 
                 addition to that, his responsibilities involved drawing and 
                 animating the canvas, handling puck collisions, updating the
                 score, and allowing the user to pick sides. Vincent's 
-                greatest accomplishment in life is arguably unlocking all of the
-                achievements in Cuphead.</p>
+                greatest accomplishment in life is arguably unlocking every 
+                single achievement in Cuphead.</p>
             </article>
             <article>
                 <figure>
