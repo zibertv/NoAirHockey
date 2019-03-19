@@ -3,6 +3,10 @@ window.onload = function() {
     var ctx = c.getContext("2d");
     var form = document.forms[0];
     
+    var seconds = 30;
+    var period = document.getElementById("period");
+    var periodNum = parseInt(period.innerHTML[period.innerHTML.length - 1]);
+    
     // set width and height of the rink
     c.width = 900;
     c.height = 450;
@@ -24,8 +28,8 @@ window.onload = function() {
     var playerStrikerPosY = 0.5 * c.height;
     var cpuStrikerPosX;
     var cpuStrikerPosY = 0.5 * c.height;
-    var homeColor = "orange";
-    var awayColor = "green";
+    var homeColor;
+    var awayColor;
     var home;
             
     form.onsubmit = function() {
@@ -40,7 +44,10 @@ window.onload = function() {
             playerStrikerPosX = 0.8 * c.width;
             cpuStrikerPosX = 0.2 * c.width;            
         }
-        
+        homeColor = document.getElementById("homeColor").value;
+        awayColor = document.getElementById("awayColor").value;
+        document.getElementById("home").style["background-color"] = homeColor;
+        document.getElementById("away").style["background-color"] = awayColor;
         // begins the animation
         startAnimation();
         document.getElementById("theme").play();
@@ -364,5 +371,54 @@ window.onload = function() {
             resetStrikers();
         }
         moveCPUStriker();
+        seconds = seconds - (16 / 1000);
+        if (seconds > 0) {
+            document.getElementById("time").innerHTML = Math.round(seconds, 2);
+        } else {
+            if (periodNum < 3) {
+                resetPuck();
+                resetStrikers();
+                periodNum += 1;
+                period.innerHTML = "PERIOD " + periodNum;
+                seconds = 30;
+            } else {
+                clearInterval(timerId);
+                var homeScore = document.getElementById("" +
+                    "home").innerHTML[document.getElementById("" +
+                        "home").innerHTML.length - 1];
+                var awayScore = document.getElementById("" +
+                    "away").innerHTML[document.getElementById("" +
+                        "away").innerHTML.length - 1];
+                console.log(homeScore);
+                console.log(awayScore);
+                if (home) {
+                    if (homeScore > awayScore) {
+                        document.getElementById("result").innerHTML = "YOU WON";
+                        document.getElementById("result").className = "won";
+                    } else if (homeScore < awayScore) {
+                        document.getElementById("result").innerHTML = "YOU " +
+                                "LOST";
+                        document.getElementById("result").className = "lost";
+                    } else {
+                        document.getElementById("result").innerHTML = "TIE " +
+                                "GAME";
+                        document.getElementById("result").className = "tie";
+                    }
+                } else {
+                    if (homeScore > awayScore) {
+                        document.getElementById("result").innerHTML = "YOU " +
+                                "LOST";
+                        document.getElementById("result").className = "lost";
+                    } else if (homeScore < awayScore) {
+                        document.getElementById("result").innerHTML = "YOU WON";
+                        document.getElementById("result").className = "won";
+                    } else {
+                        document.getElementById("result").innerHTML = "TIE " +
+                                "GAME";
+                        document.getElementById("result").className = "tie";
+                    }
+                }
+            }
+        }
     }
 };
