@@ -1,10 +1,14 @@
 window.onload = function() {
     var c = document.getElementById("rink");
     var ctx = c.getContext("2d");
+    // the form containing player details
     var form = document.forms[0];
     
+    var playerName;
+    // period length
     var seconds = 30;
     var period = document.getElementById("period");
+    // refers to the period number
     var periodNum = parseInt(period.innerHTML[period.innerHTML.length - 1]);
     
     // set width and height of the rink
@@ -33,8 +37,13 @@ window.onload = function() {
     var home;
             
     form.onsubmit = function() {
+        // hide the form and show the section containing the home and away
+        // scores, time remaining, and period number
         document.getElementById("playerDetails").style.display = "none";
         document.getElementById("info").style.display = "inline-block";
+        // initialize the player name
+        playerName = document.getElementById("playerName");
+        // set sides
         if (form[1].value === "home") {
             home = true;
             playerStrikerPosX = 0.2 * c.width;
@@ -44,17 +53,20 @@ window.onload = function() {
             playerStrikerPosX = 0.8 * c.width;
             cpuStrikerPosX = 0.2 * c.width;            
         }
+        // set the home and away colors
         homeColor = document.getElementById("homeColor").value;
         awayColor = document.getElementById("awayColor").value;
         document.getElementById("home").style["background-color"] = homeColor;
         document.getElementById("away").style["background-color"] = awayColor;
         // begins the animation
         startAnimation();
+        // plays the theme music
         document.getElementById("theme").play();
         return false;
     };
-    
+    // used to enable seamless looping of the theme music
     document.getElementById("theme").addEventListener('timeupdate', function() {
+        // approximate amount of silence that needs to be cut out
         var buffer = 0.14;
         if (this.currentTime > this.duration - buffer) {
             this.currentTime = 0;
@@ -372,52 +384,67 @@ window.onload = function() {
         }
         moveCPUStriker();
         seconds = seconds - (16 / 1000);
+        // as long as there is time remaining, don't stop
         if (seconds > 0) {
             document.getElementById("time").innerHTML = Math.round(seconds, 2);
         } else {
+            // if less than 3 periods have elapsed, do the following
             if (periodNum < 3) {
-                resetPuck();
-                resetStrikers();
-                periodNum += 1;
-                period.innerHTML = "PERIOD " + periodNum;
-                seconds = 30;
+                nextPeriod();
             } else {
-                clearInterval(timerId);
-                var homeScore = document.getElementById("" +
-                    "home").innerHTML[document.getElementById("" +
-                        "home").innerHTML.length - 1];
-                var awayScore = document.getElementById("" +
-                    "away").innerHTML[document.getElementById("" +
-                        "away").innerHTML.length - 1];
-                console.log(homeScore);
-                console.log(awayScore);
-                if (home) {
-                    if (homeScore > awayScore) {
-                        document.getElementById("result").innerHTML = "YOU WON";
-                        document.getElementById("result").className = "won";
-                    } else if (homeScore < awayScore) {
-                        document.getElementById("result").innerHTML = "YOU " +
-                                "LOST";
-                        document.getElementById("result").className = "lost";
-                    } else {
-                        document.getElementById("result").innerHTML = "TIE " +
-                                "GAME";
-                        document.getElementById("result").className = "tie";
-                    }
-                } else {
-                    if (homeScore > awayScore) {
-                        document.getElementById("result").innerHTML = "YOU " +
-                                "LOST";
-                        document.getElementById("result").className = "lost";
-                    } else if (homeScore < awayScore) {
-                        document.getElementById("result").innerHTML = "YOU WON";
-                        document.getElementById("result").className = "won";
-                    } else {
-                        document.getElementById("result").innerHTML = "TIE " +
-                                "GAME";
-                        document.getElementById("result").className = "tie";
-                    }
-                }
+                stopAnimation();
+            }
+        }
+    }
+    // increments the period and resets the rink
+    function nextPeriod() {
+        resetPuck();
+        resetStrikers();
+        periodNum += 1;
+        period.innerHTML = "PERIOD " + periodNum;
+        seconds = 30;
+    }
+    // stops the animation when the game is over
+    function stopAnimation() {
+        // end the game, give the user some closure
+        clearInterval(timerId);
+        var homeScore = document.getElementById("" +
+            "home").innerHTML[document.getElementById("" +
+                "home").innerHTML.length - 1];
+        var awayScore = document.getElementById("" +
+            "away").innerHTML[document.getElementById("" +
+                "away").innerHTML.length - 1];
+        console.log(homeScore);
+        console.log(awayScore);
+        if (home) {
+            if (homeScore > awayScore) {
+                document.getElementById("" +
+                        "result").innerHTML = playerName.value + " WON";
+                document.getElementById("result").className = "won";
+            } else if (homeScore < awayScore) {
+                document.getElementById("" +
+                        "result").innerHTML = playerName.value + 
+                        " LOST";
+                document.getElementById("result").className = "lost";
+            } else {
+                document.getElementById("result").innerHTML = "TIE " +
+                        "GAME";
+                document.getElementById("result").className = "tie";
+            }
+        } else {
+            if (homeScore > awayScore) {
+                document.getElementById("" +
+                        "result").innerHTML = playerName.value + 
+                        " LOST";
+                document.getElementById("result").className = "lost";
+            } else if (homeScore < awayScore) {
+                document.getElementById("" +
+                        "result").innerHTML = playerName.value + " WON";
+                document.getElementById("result").className = "won";
+            } else {
+                document.getElementById("result").innerHTML = "TIE " +
+                        "GAME";
+                document.getElementById("result").className = "tie";
             }
         }
     }
